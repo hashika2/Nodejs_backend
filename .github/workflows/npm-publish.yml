@@ -31,3 +31,5 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Run ESLint
+        run: npm run lint
