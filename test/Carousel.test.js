@@ -13,7 +13,7 @@ describe('string with a single number should result in the number itself', () =>
 
     it('calculation', () => {
         const res = getSum(2);
-        expect(res).toBe(6);
+        expect(res).toBe(4);
     })
 
 });
