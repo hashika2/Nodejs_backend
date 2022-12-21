@@ -1,7 +1,7 @@
 exports.getCarousalData = (req, res) => {
     try{
         // need to get data from database
-        if(req.query.slides == '1'){
+        if(req.query.slides == "1"){
             res.status(200).send({
                 slides: [
                     {
@@ -10,7 +10,7 @@ exports.getCarousalData = (req, res) => {
                         subTitle: "subTitle1"
                     }
                 ]
-            })
+            });
         }else{
             res.status(200).send({
                 slides: [
@@ -30,9 +30,9 @@ exports.getCarousalData = (req, res) => {
                         subTitle: "subTitle3"
                     }
                 ]
-            })
+            });
         }
     }catch(err){
-        res.status(500).send('Internel Server Error')
+        res.status(500).send("Internel Server Error");
     }
-}
+};
