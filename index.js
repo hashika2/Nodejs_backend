@@ -6,7 +6,7 @@ const cors = require('cors');
 const db = require('./model');
 
 const app = express();
-const port = 3600
+const port = 3600;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,18 +15,18 @@ app.use(cors());
 
 app.use('/api', page);
 
-// db.mongoose
-//     .connect(db.url, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     })
-//     .then(() => {
-//         console.warn('Connected to the database!');
-//     })
-//     .catch((err) => {
-//         console.error('Cannot connect to the database!', err);
-//         process.exit();
-//     });
+db.mongoose
+    .connect('mongodb://localhost:27017/woods', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => {
+        console.warn('Connected to the database!');
+    })
+    .catch((err) => {
+        console.error('Cannot connect to the database!', err);
+        process.exit();
+    });
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
