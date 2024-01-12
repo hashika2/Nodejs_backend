@@ -5,6 +5,8 @@ const wood = require('../controller/woods.controller');
 
 router.get(`/carousel`, (req,res)=> carousel.getAll(req,res));
 
+router.post(`/signup`, (req,res)=> wood.signUp(req,res));
+router.post(`/signin`, (req,res)=> wood.signIn(req,res));
 router.get(`/user`, (req,res)=> wood.getUsers(req,res));
 router.get(`/tree-types`, (req,res)=> wood.getTreeTypes(req,res));
 router.post(`/tree-types`, (req,res)=> wood.createTreeTypes(req,res));
