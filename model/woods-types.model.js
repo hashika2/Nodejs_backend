@@ -21,6 +21,17 @@ const woodTypeSchema = new mongoose.Schema({
         type: Number,
         default: null,
     },
+    wood_size: [
+        {size: {
+            type: String,
+            maxLength: 50,
+            required: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        },}
+    ],
     created_at: {
         type: Date,
         default: Date.now,
