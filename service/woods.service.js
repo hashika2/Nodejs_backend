@@ -1,5 +1,10 @@
+const Buying = require("../model/buying.model")
+const BuyWoodType = require("../model/by-wood-types.model")
+const Cutting = require("../model/custting.model")
+const Selling = require("../model/selling.model")
 const TreeType = require("../model/tree-types.model")
 const User = require("../model/user.model")
+const WoodType = require("../model/woods-types.model")
 
 exports.getWoodsData = (req, res) => {
     try {
@@ -66,7 +71,7 @@ const getTreeTypeData = (req, res) => {
             }
             // Close the database connection when done (optional)
             // mongoose.connection.close();
-            return res.header("auth-token", 'accessToken').send({ "data": treeTypes })
+            return res.header("auth-token", 'accessToken').send( treeTypes )
         });
 
     } catch (error) {
@@ -74,4 +79,101 @@ const getTreeTypeData = (req, res) => {
     }
 }
 
-module.exports = { getUserData, getTreeTypeData }
+const createTreeTypeData = async(req, res) => {
+    try {
+        // Retrieve tree types
+        const a = await TreeType.create(req.body)
+        return res.status(200).json({"data": a})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+//remove
+const createWoodType = async(req, res) => {
+    try {
+        // Retrieve tree types
+        const a = await WoodType.create(req.body)
+        return res.status(200).json({"data": a})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const getWoodTypes = async(req, res) => {
+    try {
+        // Retrieve tree types
+        const woodTypes = await WoodType.find()
+        return res.status(200).json(woodTypes )
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+//remove
+const createBuyWoodType = async(req, res) => {
+    try {
+        // Retrieve tree types
+        const a = await BuyWoodType.create(req.body)
+        return res.status(200).json({"data": a})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const getBuyWoodTypes = async(req, res) => {
+    try {
+        // Retrieve tree types
+        const woodTypes = await BuyWoodType.find()
+        return res.status(200).json(woodTypes )
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const createCuttingItem = async(req,res) => {
+    try {
+        const cuttingItem = await Cutting.create(req.body)
+        return res.status(200).json({"data": cuttingItem})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const createBuyingItem = async(req,res) => {
+    try {
+        const buyingItem = await Buying.create(req.body)
+        return res.status(200).json({"data": buyingItem})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const createSellingItem = async(req,res) => {
+    try {
+        const sellingItem = await Selling.create(req.body)
+        return res.status(200).json({"data": sellingItem})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const editSellingItem = async(req,res) => {
+    try {
+        const sellingItem = await Selling.findOneAndUpdate({_id: req.params.id}, req.body)
+        return res.status(200).json({"data": sellingItem})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const deleteSellingItem = async(req,res) => {
+    try {
+        const sellingItem = await Selling.deleteOne({_id: req.params.id})
+        return res.status(200).json({"data": sellingItem})
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,createSellingItem, 
+    editSellingItem,deleteSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,getBuyWoodTypes }

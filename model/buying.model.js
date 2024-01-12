@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const buyingSchema = new mongoose.Schema({
-    tree_type_id: {
+    buy_wood_type_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'TreeType', // Referencing the 'tree_types' collection
+        ref: 'BuyWoodType', // Referencing the 'tree_types' collection
         required: true,
     },
     circumference: {

@@ -16,7 +16,7 @@ app.use(cors());
 app.use('/api', page);
 
 db.mongoose
-    .connect('mongodb://localhost:27017/woods', {
+    .connect('mongodb+srv://anjanashakthi114:8SOjdvaINjHRSpDp@cluster0.hjvgii0.mongodb.net/?retryWrites=true&w=majority', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
