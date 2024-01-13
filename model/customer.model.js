@@ -16,14 +16,14 @@ const customerSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    email_verified_at: {
-        type: Date,
-        default: null,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
+    // email_verified_at: {
+    //     type: Date,
+    //     default: null,
+    // },
+    // password: {
+    //     type: String,
+    //     required: true,
+    // },
     address: {
         type: String,
         required: true,

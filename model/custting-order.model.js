@@ -22,6 +22,10 @@ const cuttingSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    distance: {
+        type: Number,
+        required: true,
+    },
     subtotal: {
         type: Number,
         required: true,
@@ -29,6 +33,14 @@ const cuttingSchema = new mongoose.Schema({
     total: {
         type: Number,
         required: true,
+    },
+    transport: {
+        type: Number,
+        required: true
+    },
+    customer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer', // Referencing the 'tree_types' collection
     },
     created_at: {
         type: Date,

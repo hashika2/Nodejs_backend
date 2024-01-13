@@ -1,7 +1,8 @@
 const Buying = require("../model/buying-order.model")
 const BuyWoodType = require("../model/by-wood-types.model")
+const Customer = require("../model/customer.model")
 const Cutting = require("../model/custting-order.model")
-const Selling = require("../model/selling.model")
+const Selling = require("../model/selling-order.model")
 const TreeType = require("../model/tree-types.model")
 const User = require("../model/user.model")
 const WoodType = require("../model/woods-types.model")
@@ -133,7 +134,7 @@ const getBuyWoodTypes = async(req, res) => {
 const createCuttingItem = async(req,res) => {
     try {
         const cuttingItem = await Cutting.create(req.body)
-        return res.status(200).json({"data": cuttingItem})
+        return res.status(200).json(cuttingItem)
     } catch (error) {
         return res.status(500).json({ error: error });
     }
@@ -142,7 +143,7 @@ const createCuttingItem = async(req,res) => {
 const createBuyingItem = async(req,res) => {
     try {
         const buyingItem = await Buying.create(req.body)
-        return res.status(200).json({"data": buyingItem})
+        return res.status(200).json(buyingItem)
     } catch (error) {
         return res.status(500).json({ error: error });
     }
@@ -150,30 +151,65 @@ const createBuyingItem = async(req,res) => {
 
 const createSellingItem = async(req,res) => {
     try {
-        const sellingItem = await Selling.create(req.body)
-        return res.status(200).json({"data": sellingItem})
+        const customer = await Customer.create(req.body.customer)
+        const sellingData = {...req.body.orderDetails,customer_id: customer._id}
+        const sellingItem = await Selling.create(sellingData)
+        return res.status(200).json(sellingItem)
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: error });
     }
 }
 
-const editSellingItem = async(req,res) => {
+const cuttingOrderPayment = async(req,res) => {
     try {
-        const sellingItem = await Selling.findOneAndUpdate({_id: req.params.id}, req.body)
-        return res.status(200).json({"data": sellingItem})
+        const customer = await Customer.create(req.body)
+        const cuttingPaymentData = await Cutting.findOneAndUpdate({_id: req.params.id},{customer_id: customer._id})
+        return res.status(200).json(cuttingPaymentData )
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: error });
     }
 }
 
-const deleteSellingItem = async(req,res) => {
+const buyingOrderPayment = async(req,res) => {
     try {
-        const sellingItem = await Selling.deleteOne({_id: req.params.id})
-        return res.status(200).json({"data": sellingItem})
+        const customer = await Customer.create(req.body)
+        const buyingPaymentData = await Buying.findOneAndUpdate({_id: req.params.id},{customer_id: customer._id})
+        return res.status(200).json(buyingPaymentData)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error });
+    }
+}
+
+const addCustomerDetails = async(req,res) => {
+    try {
+        const customer = await Customer.create(req.body)
+        return res.status(200).json(customer)
     } catch (error) {
         return res.status(500).json({ error: error });
     }
 }
 
-module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,createSellingItem, 
-    editSellingItem,deleteSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,getBuyWoodTypes }
+// const editSellingItem = async(req,res) => {
+//     try {
+//         const sellingItem = await Selling.findOneAndUpdate({_id: req.params.id}, req.body)
+//         return res.status(200).json({"data": sellingItem})
+//     } catch (error) {
+//         return res.status(500).json({ error: error });
+//     }
+// }
+
+// const deleteSellingItem = async(req,res) => {
+//     try {
+//         const sellingItem = await Selling.deleteOne({_id: req.params.id})
+//         return res.status(200).json({"data": sellingItem})
+//     } catch (error) {
+//         return res.status(500).json({ error: error });
+//     }
+// }
+
+module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,
+    createSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,
+    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment }
