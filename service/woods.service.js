@@ -7,6 +7,9 @@ const TreeType = require("../model/tree-types.model")
 const User = require("../model/user.model")
 const WoodType = require("../model/woods-types.model")
 
+const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
 exports.getWoodsData = (req, res) => {
     try {
         // need to get data from database
@@ -45,6 +48,59 @@ exports.getWoodsData = (req, res) => {
         res.status(500).send('Internel Server Error')
     }
 }
+
+const userSignUp = async (req, res) => {
+    try {
+        const {name, password, email } = req.body;
+        //check the email
+        const user = await User.findOne( { email } );
+        if (user) {
+            return res.status(400).json({ error: "User already exist" });
+        }
+        const bycriptPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({
+            name,
+            email,
+            email_verified_at: new Date(),
+            password: bycriptPassword,
+        });
+
+        newUser.save();
+        return res.send(newUser);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error });
+    }
+}
+
+const userSignIn = async (req, res) => {
+    try {
+        const { password, email } = req.body;
+        const user = await User.findOne( { email } );
+        if (!user) {
+            return res.status(400).json({ error: "User not found" });
+        }
+
+        if (await bcrypt.compare(password, user.password)) {
+            const payload = { id: user.id };
+            const data = {
+              access_token: jwt.sign(payload, 'secret', { expiresIn: 60 * 60 }),
+              userId: user.id,
+              username: user.name,
+              type: 'Bearer',
+              expiresIn: 60 * 60,
+            };
+            return res.send(data);
+        } else {
+            return res.status(400).json({ error: 'Invalid email or password' });
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error });
+    }
+}
+
+
 
 const getUserData = (req, res) => {
     try {
@@ -212,4 +268,4 @@ const addCustomerDetails = async(req,res) => {
 
 module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,
     createSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,
-    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment }
+    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment,userSignUp, userSignIn }
