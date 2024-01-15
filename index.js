@@ -15,18 +15,18 @@ app.use(cors());
 
 app.use("/api", page);
 
-// db.mongoose
-//     .connect(db.url, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     })
-//     .then(() => {
-//         console.warn('Connected to the database!');
-//     })
-//     .catch((err) => {
-//         console.error('Cannot connect to the database!', err);
-//         process.exit();
-//     });
+db.mongoose
+    .connect('mongodb+srv://anjanashakthi114:8SOjdvaINjHRSpDp@cluster0.hjvgii0.mongodb.net/?retryWrites=true&w=majority', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => {
+        console.warn('Connected to the database!');
+    })
+    .catch((err) => {
+        console.error('Cannot connect to the database!', err);
+        process.exit();
+    });
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
