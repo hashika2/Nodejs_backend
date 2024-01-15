@@ -9,6 +9,22 @@ const WoodType = require("../model/woods-types.model")
 
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({username: 'api', key: '65b08458-87762277' || 'key-yourkeyhere'});
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.mailgun.org",
+    port: 587,
+    service: 'Mailgun',
+    auth: {
+      user: 'postmaster@sandbox3da8e7510085440aaaf033d264fb17f9.mailgun.org',
+      pass: '6826a6692bbee3a9a701f172615a7fce-65b08458-e020b1ed'
+    }
+  });
 
 exports.getWoodsData = (req, res) => {
     try {
@@ -66,6 +82,7 @@ const userSignUp = async (req, res) => {
         });
 
         newUser.save();
+        sendEmail(email, 'User Creation', "<h1>User created successfully!</h1>")
         return res.send(newUser);
     } catch (error) {
         console.log(error)
@@ -171,6 +188,7 @@ const createBuyWoodType = async(req, res) => {
     try {
         // Retrieve tree types
         const a = await BuyWoodType.create(req.body)
+        sendEmail(req.body.email);
         return res.status(200).json({"data": a})
     } catch (error) {
         return res.status(500).json({ error: error });
@@ -231,7 +249,8 @@ const cuttingOrderPayment = async(req,res) => {
 const buyingOrderPayment = async(req,res) => {
     try {
         const customer = await Customer.create(req.body)
-        const buyingPaymentData = await Buying.findOneAndUpdate({_id: req.params.id},{customer_id: customer._id})
+        const buyingPaymentData = await Buying.findOneAndUpdate({_id: req.params.id},{customer_id: customer._id}) 
+        sendEmail(req.body?.email, 'Checkout Woods', "<h1>Checkout is successfully!</h1>")
         return res.status(200).json(buyingPaymentData)
     } catch (error) {
         console.log(error)
@@ -265,6 +284,37 @@ const addCustomerDetails = async(req,res) => {
 //         return res.status(500).json({ error: error });
 //     }
 // }
+
+const sendEmail = (email, subject, html) => {
+    try{
+        var mailOptions = {
+            from:  "Hogwart's <m.g.hashikamaduranga@gmail.com>",
+            to: email,
+            subject,
+            text: 'That was easy!',
+            html
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+        // mg.messages.create('sandbox3da8e7510085440aaaf033d264fb17f9.mailgun.org', {
+        //     from: "Excited User <m.g.hashikamaduranga@gmail.com>",
+        //     to: ["m.g.hashikamaduranga@gmail.com"],
+        //     subject: "Hello",
+        //     text: "Testing some Mailgun awesomeness!",
+        //     html: "<h1>Testing some Mailgun awesomeness!</h1>"
+        // })
+        // .then(msg => console.log(msg)) // logs response data
+        // .catch(err => console.log(err));
+    }catch(error){
+        console.log('Email error: ' + error);
+    }
+}
 
 module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,
     createSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,
