@@ -1,4 +1,4 @@
-const { getWoodsData, getUserData, getTreeTypeData, createCuttingItem, createSellingItem, createBuyingItem, createTreeTypeData, createWoodType, getWoodTypes, getBuyWoodTypes, createBuyWoodType, addCustomerDetails,cuttingOrderPayment,buyingOrderPayment,userSignUp, userSignIn } = require("../service/woods.service");
+const { getWoodsData, getUserData, getTreeTypeData, createCuttingItem, createSellingItem, createBuyingItem, createTreeTypeData, createWoodType, getWoodTypes, getBuyWoodTypes, createBuyWoodType, addCustomerDetails,cuttingOrderPayment,buyingOrderPayment,userSignUp, userSignIn, productAddToCart } = require("../service/woods.service");
 
 exports.signUp = (req, res) => {
     return userSignUp(req, res);
@@ -38,6 +38,10 @@ exports.buyingOrderPay = (req, res) => {
 
 exports.creatingSellingOrder = (req, res) => {
     return createSellingItem(req,res)
+};
+
+exports.productAddToCart = (req, res) => {
+    return productAddToCart(req,res)
 };
 
 // exports.editSellingOrder = (req, res) => {

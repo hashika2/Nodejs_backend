@@ -13,6 +13,7 @@ const nodemailer = require('nodemailer');
 
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
+const ProductCart = require("../model/product-cart.model")
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({username: 'api', key: '65b08458-87762277' || 'key-yourkeyhere'});
 
@@ -235,6 +236,19 @@ const createSellingItem = async(req,res) => {
     }
 }
 
+const productAddToCart = async(req,res) => {
+    try {
+        const customer = await Customer.create(req.body.customer)
+        const sellingData = {...req.body.orderDetails,customer_id: customer._id}
+        const sellingItem = await ProductCart.create(sellingData)
+        sendEmail(req.body?.email, 'Checkout Products', "<h1>Checkout is successfully!</h1>")
+        return res.status(200).json(sellingItem)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error });
+    }
+}
+
 const cuttingOrderPayment = async(req,res) => {
     try {
         const customer = await Customer.create(req.body)
@@ -318,4 +332,4 @@ const sendEmail = (email, subject, html) => {
 
 module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,
     createSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,
-    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment,userSignUp, userSignIn }
+    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment,userSignUp, userSignIn,productAddToCart }

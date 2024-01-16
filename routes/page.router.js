@@ -20,5 +20,6 @@ router.post(`/wood-types`, (req,res)=> wood.addWoodTypes(req,res));
 router.get(`/buy-wood-types`, (req,res)=> wood.getBuyWoodTypes(req,res));
 router.post(`/buy-wood-types`, (req,res)=> wood.addBuyWoodTypes(req,res));
 router.post(`/buy-wood-types`, (req,res)=> wood.addBuyWoodTypes(req,res));
+router.post(`/product/pay`, (req,res)=> wood.productAddToCart(req,res));
 // router.post(`/customer`, (req,res)=> wood.addCustomer(req,res));
 module.exports = router;
