@@ -1,4 +1,4 @@
-const { getWoodsData, getUserData, getTreeTypeData, createCuttingItem, createSellingItem, createBuyingItem, createTreeTypeData, createWoodType, getWoodTypes, getBuyWoodTypes, createBuyWoodType, addCustomerDetails,cuttingOrderPayment,buyingOrderPayment,userSignUp, userSignIn, productAddToCart } = require("../service/woods.service");
+const { getWoodsData, getUserData, getTreeTypeData, createCuttingItem, createSellingItem, createBuyingItem, createTreeTypeData, createWoodType, getWoodTypes, getBuyWoodTypes, createBuyWoodType, addCustomerDetails,cuttingOrderPayment,buyingOrderPayment,userSignUp, userSignIn, productAddToCart, getProducts, addProduct } = require("../service/woods.service");
 
 exports.signUp = (req, res) => {
     return userSignUp(req, res);
@@ -44,18 +44,6 @@ exports.productAddToCart = (req, res) => {
     return productAddToCart(req,res)
 };
 
-// exports.editSellingOrder = (req, res) => {
-//     return editSellingItem(req,res)
-// };
-
-// exports.deleteSellingOrder = (req, res) => {
-//     return deleteSellingItem(req,res)
-// };
-
-// exports.getWoodTypes = (req, res) => {
-//     return getWoodsData(req, res);
-// };
-
 exports.addWoodTypes = (req,res) => {
     return createWoodType(req,res)
 }
@@ -72,6 +60,10 @@ exports.getBuyWoodTypes = (req, res) => {
     return getBuyWoodTypes(req,res)
 };
 
-exports.addCustomer = (req,res) => {
-    return addCustomerDetails(req,res)
+exports.addProduct = (req,res) => {
+    return addProduct(req,res)
+}
+
+exports.getProducts = (req,res) => {
+    return getProducts(req,res)
 }

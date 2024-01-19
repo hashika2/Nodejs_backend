@@ -14,6 +14,7 @@ const nodemailer = require('nodemailer');
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const ProductCart = require("../model/product-cart.model")
+const Product = require("../model/product.model")
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({username: 'api', key: '65b08458-87762277' || 'key-yourkeyhere'});
 
@@ -281,24 +282,6 @@ const addCustomerDetails = async(req,res) => {
     }
 }
 
-// const editSellingItem = async(req,res) => {
-//     try {
-//         const sellingItem = await Selling.findOneAndUpdate({_id: req.params.id}, req.body)
-//         return res.status(200).json({"data": sellingItem})
-//     } catch (error) {
-//         return res.status(500).json({ error: error });
-//     }
-// }
-
-// const deleteSellingItem = async(req,res) => {
-//     try {
-//         const sellingItem = await Selling.deleteOne({_id: req.params.id})
-//         return res.status(200).json({"data": sellingItem})
-//     } catch (error) {
-//         return res.status(500).json({ error: error });
-//     }
-// }
-
 const sendEmail = (email, subject, html) => {
     try{
         var mailOptions = {
@@ -330,6 +313,25 @@ const sendEmail = (email, subject, html) => {
     }
 }
 
+const addProduct = async(req,res) => {
+    try {
+        const product = await Product.create(req.body)
+        return res.status(200).json(product)
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+const getProducts = async(req,res) => {
+    try {
+        const products = await Product.find()
+        return res.status(200).json(products)
+    } catch (error) {
+        return res.status(500).json({ error: error });
+    }
+}
+
+
 module.exports = { getUserData, getTreeTypeData, createCuttingItem,createBuyingItem,
     createSellingItem,createTreeTypeData, createWoodType, getWoodTypes,createBuyWoodType,
-    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment,userSignUp, userSignIn,productAddToCart }
+    getBuyWoodTypes, addCustomerDetails,cuttingOrderPayment, buyingOrderPayment,userSignUp, userSignIn,productAddToCart,addProduct,getProducts }
